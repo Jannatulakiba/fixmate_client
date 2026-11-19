@@ -14,6 +14,8 @@ export default function MyBookings() {
   const [target, setTarget] = useState<Booking | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const [payingId, setPayingId] = useState<string | null>(null);
+
   useEffect(() => {
     apiFetch<Booking[]>("/api/bookings/my")
       .then(setList)
@@ -35,6 +37,20 @@ export default function MyBookings() {
       toast.error(e instanceof Error ? e.message : "Could not cancel booking");
     } finally {
       setBusy(false);
+    }
+  };
+
+  const pay = async (b: Booking) => {
+    setPayingId(b._id);
+    try {
+      const { url } = await apiFetch<{ url: string }>("/api/payments/create-checkout-session", {
+        method: "POST",
+        body: JSON.stringify({ bookingId: b._id }),
+      });
+      window.location.assign(url);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not start checkout");
+      setPayingId(null);
     }
   };
 
@@ -93,11 +109,8 @@ export default function MyBookings() {
                     <button className="btn btn-error btn-outline btn-xs" onClick={() => setTarget(b)}>Cancel</button>
                   )}
                   {b.status === "completed" && b.paymentStatus === "unpaid" && (
-                    <button
-                      className="btn btn-secondary btn-xs"
-                      onClick={() => toast.info("Stripe payment will be connected in the next step")}
-                    >
-                      Pay Now
+                    <button className="btn btn-secondary btn-xs" disabled={payingId === b._id} onClick={() => pay(b)}>
+                      {payingId === b._id ? <span className="loading loading-spinner loading-xs" /> : "Pay Now"}
                     </button>
                   )}
                   {b.paymentStatus === "paid" && <span className="badge badge-success badge-soft">Paid</span>}

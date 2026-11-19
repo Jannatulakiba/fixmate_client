@@ -29,9 +29,15 @@ export async function getServices(q: ServiceQuery = {}): Promise<FullService[]> 
   Object.entries(q).forEach(([k, v]) => {
     if (v) params.set(k, String(v));
   });
-  const res = await fetch(`${API}/api/services?${params}`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load services");
-  return res.json();
+  try {
+    const res = await fetch(`${API}/api/services?${params}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`API responded ${res.status}`);
+    return res.json();
+  } catch (e) {
+    // API down/jawe na: marketing page gulo crash na kore empty dekhabe
+    console.warn("[getServices] unavailable:", e instanceof Error ? e.message : e);
+    return [];
+  }
 }
 
 export async function getService(id: string): Promise<FullService | null> {

@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  ReceiptText,
   ShieldCheck,
   UserPen,
   Users,
@@ -31,7 +32,10 @@ function navFor(role: string): NavItem[] {
   const items: NavItem[] = [{ href: dashboardPath(role), label: "Overview", icon: LayoutDashboard }];
 
   if (getUserRole(role) === "customer") {
-    items.push({ href: "/dashboard/customer/bookings", label: "My Bookings", icon: CalendarDays });
+    items.push(
+      { href: "/dashboard/customer/bookings", label: "My Bookings", icon: CalendarDays },
+      { href: "/dashboard/customer/payments", label: "Payments", icon: ReceiptText },
+    );
   }
 
   if (getUserRole(role) === "technician") {

@@ -53,6 +53,7 @@ export default async function Home() {
       </section>
 
       {/* Featured */}
+      {featured.length > 0 && (
       <section className="max-w-7xl mx-auto px-4 mt-20">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -65,6 +66,7 @@ export default async function Home() {
           {featured.map((s) => <ServiceCard key={s._id} s={s} />)}
         </div>
       </section>
+      )}
 
       {/* How it works */}
       <section className="bg-base-200 mt-20 py-16">
