@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search, ShieldCheck, Smartphone, Laptop, Snowflake, Thermometer, Tv, WashingMachine, Zap, ClipboardList, Wrench, CreditCard } from "lucide-react";
-import ServiceCard, { Service } from "@/components/ServiceCard";
+import ServiceCard from "@/components/ServiceCard";
+import { getServices } from "@/lib/services";
 
 const categories = [
   { name: "Smartphone", icon: Smartphone },
@@ -19,18 +20,10 @@ const steps = [
   { icon: CreditCard, title: "Pay After Completion", text: "Pay securely only when work is done." },
 ];
 
-const mock: Service[] = Array.from({ length: 6 }).map((_, i) => ({
-  _id: String(i + 1),
-  title: ["iPhone Screen Replacement", "Laptop Servicing", "AC Gas Refill", "Fridge Repair", "LED TV Repair", "Washer Motor Fix"][i],
-  category: ["Smartphone", "Laptop & PC", "AC", "Refrigerator", "TV", "Washing Machine"][i],
-  image: `https://picsum.photos/seed/fixmate${i}/600/400`,
-  serviceMode: i % 2 ? "Shop Drop-off" : "Home Visit",
-  serviceArea: "Barishal Sadar",
-  basePrice: 15 + i * 7,
-  technicianName: "Rahim Uddin",
-}));
+export default async function Home() {
 
-export default function Home() {
+  const featured = await getServices({ limit: 6 });
+
   return (
     <>
       {/* Hero */}
@@ -61,10 +54,15 @@ export default function Home() {
 
       {/* Featured */}
       <section className="max-w-7xl mx-auto px-4 mt-20">
-        <h2 className="section-title">Featured Services</h2>
-        <p className="section-sub">Latest approved services from trusted technicians.</p>
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 className="section-title">Featured Services</h2>
+            <p className="section-sub">Latest approved services from trusted technicians.</p>
+          </div>
+          <Link href="/services" className="btn btn-outline btn-sm hidden sm:inline-flex">View All</Link>
+        </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {mock.map((s) => <ServiceCard key={s._id} s={s} />)}
+          {featured.map((s) => <ServiceCard key={s._id} s={s} />)}
         </div>
       </section>
 

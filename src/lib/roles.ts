@@ -1,9 +1,9 @@
-export type UserRole = "customer" | "technician";
+export type UserRole = "customer" | "technician" | "admin";
 
 export function getUserRole(value: unknown): UserRole {
-  return value === "technician" ? "technician" : "customer";
+  return value === "technician" || value === "admin" ? value : "customer";
 }
 
 export function dashboardPath(value: unknown): string {
-  return getUserRole(value) === "technician" ? "/technician" : "/customer";
+  return `/dashboard/${getUserRole(value)}`;
 }

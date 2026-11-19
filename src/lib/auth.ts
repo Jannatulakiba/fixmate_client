@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { db, client } from "./mongodb";
+import { jwt } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
@@ -22,10 +23,22 @@ export const auth = betterAuth({
         before: async (user) => ({
           data: {
             ...user,
-            role: (user as any).role === "technician" ? "technician" : "customer",
+            role: (user as { role?: string }).role === "technician" ? "technician" : "customer",
           },
         }),
       },
     },
   },
+   plugins: [
+    jwt({
+      jwt: {
+        expirationTime: "1h",
+        definePayload: ({ user }) => ({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        }),
+      },
+    }),
+  ],
 });

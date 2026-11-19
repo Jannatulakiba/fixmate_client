@@ -10,7 +10,8 @@ import { dashboardPath, getUserRole } from "@/lib/roles";
 function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const redirectTo = params.get("redirect");
+  const raw = params.get("redirect");
+  const redirectTo = raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : null;
   const { data: session } = authClient.useSession();
 
   const [form, setForm] = useState({ email: "", password: "" });
