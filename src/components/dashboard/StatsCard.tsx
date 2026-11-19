@@ -11,19 +11,30 @@ const tones = {
 type Props = {
   label: string;
   value: number | string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   tone?: keyof typeof tones;
+  hint?: string;
+  highlight?: boolean;
 };
 
-export default function StatsCard({ label, value, icon: Icon, tone = "primary" }: Props) {
+export default function StatsCard({ label, value, icon: Icon, tone = "primary", hint, highlight }: Props) {
   return (
-    <div className="bg-base-100 border border-base-300 rounded-box p-5 flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${tones[tone]}`}>
-        <Icon size={22} />
-      </div>
+    <div
+      className={`rounded-box p-5 flex items-start gap-4 border ${
+        highlight ? "bg-primary text-primary-content border-primary" : "bg-base-100 border-base-300"
+      }`}
+    >
+      {Icon && (
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${highlight ? "bg-white/15" : tones[tone]}`}>
+          <Icon size={22} />
+        </div>
+      )}
       <div>
-        <p className="text-sm text-base-content/60">{label}</p>
-        <p className="text-2xl font-extrabold text-primary">{value}</p>
+        <p className={`text-sm ${highlight ? "text-primary-content/80" : "text-base-content/60"}`}>{label}</p>
+        <p className={`text-3xl font-extrabold ${highlight ? "text-secondary" : "text-primary"}`}>{value}</p>
+        {hint && (
+          <p className={`text-xs mt-1 ${highlight ? "text-primary-content/70" : "text-base-content/60"}`}>{hint}</p>
+        )}
       </div>
     </div>
   );

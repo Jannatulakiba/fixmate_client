@@ -7,8 +7,10 @@ import {
   CalendarDays,
   Inbox,
   LayoutDashboard,
+  ListChecks,
   LogOut,
   Menu,
+  PlusSquare,
   ReceiptText,
   ShieldCheck,
   UserPen,
@@ -25,6 +27,8 @@ type User = {
   image: string | null;
   role: string;
 };
+
+
 
 type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
 
@@ -81,6 +85,13 @@ export default function DashboardShell({
     router.replace("/");
     router.refresh();
   };
+  technician: [
+  { href: "/dashboard/technician", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard/technician/add-service", label: "Add a service", icon: PlusSquare },
+  { href: "/dashboard/technician/my-services", label: "My services", icon: ListChecks },
+  { href: "/dashboard/technician/requests", label: "Manage requests", icon: Inbox },
+  { href: "/dashboard/profile", label: "Update profile", icon: UserPen },
+]
 
   const sidebar = (
     <nav className="flex flex-col gap-1">

@@ -29,4 +29,21 @@ export type Payment = {
   transactionId: string;
   paidAt: string;
 };
+export type MyService = {
+  _id: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  basePrice: number;
+  estimatedDuration: string;
+  serviceMode: string;
+  serviceArea: string;
+  approvalStatus: "pending" | "approved" | "rejected";
+  isAvailable: boolean;
+};
+
+
+// #FM-1052 type short booking id
+export const shortId = (id: string) => `#FM-${id.slice(-4).toUpperCase()}`;
 export const fmtDate = (d: string) => new Date(d).toLocaleDateString("en-GB", { timeZone: "UTC" });
