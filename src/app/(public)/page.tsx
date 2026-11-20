@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { Search, ShieldCheck, Smartphone, Laptop, Snowflake, Thermometer, Tv, WashingMachine, Zap, ClipboardList, Wrench, CreditCard } from "lucide-react";
+import { Search, ShieldCheck, Smartphone, Laptop, Snowflake, Thermometer, Tv, WashingMachine, Zap, ClipboardList, Wrench, CreditCard, type LucideIcon } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
 import { getServices } from "@/lib/services";
+import { fetchCategories, fetchPublicStats, fmtCount } from "@/lib/public";
 
-const categories = [
-  { name: "Smartphone", icon: Smartphone },
-  { name: "Laptop & PC", icon: Laptop },
-  { name: "AC", icon: Snowflake },
-  { name: "Refrigerator", icon: Thermometer },
-  { name: "TV", icon: Tv },
-  { name: "Washing Machine", icon: WashingMachine },
-  { name: "Electrical", icon: Zap },
-];
+// Category name -> icon (name gula API theke ashe, icon lokal)
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Smartphone,
+  "Laptop & PC": Laptop,
+  AC: Snowflake,
+  Refrigerator: Thermometer,
+  TV: Tv,
+  "Washing Machine": WashingMachine,
+  Electrical: Zap,
+};
 
 const steps = [
   { icon: Search, title: "Find a Service", text: "Browse verified technicians and services." },
@@ -21,8 +23,22 @@ const steps = [
 ];
 
 export default async function Home() {
+  const [featured, taxonomy, stats] = await Promise.all([
+    getServices({ limit: 6 }),
+    fetchCategories(),
+    fetchPublicStats(),
+  ]);
 
-  const featured = await getServices({ limit: 6 });
+  const categories = taxonomy.categories.map((name) => ({ name, icon: CATEGORY_ICONS[name] ?? Wrench }));
+  const heroImage = featured[0]?.image ?? "https://picsum.photos/seed/fixmatehero/800/560";
+
+  const statTiles = stats
+    ? [
+        [fmtCount(stats.verifiedTechnicians), "Verified Technicians"],
+        [fmtCount(stats.jobsCompleted), "Jobs Completed"],
+        [fmtCount(stats.servicesListed), "Services Listed"],
+      ]
+    : [];
 
   return (
     <>
@@ -44,7 +60,7 @@ export default async function Home() {
           </div>
           <div className="hidden lg:block">
             <img
-              src="https://picsum.photos/seed/fixmatehero/800/560"
+              src={heroImage}
               alt="Technician repairing a device"
               className="rounded-3xl shadow-2xl w-full h-[420px] object-cover"
             />
@@ -104,17 +120,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Why choose us / stats */}
-      <section className="max-w-7xl mx-auto px-4 mt-20">
-        <div className="bg-primary text-primary-content rounded-3xl p-10 grid gap-6 sm:grid-cols-3 text-center">
-          {[["500+", "Verified Technicians"], ["12k+", "Jobs Completed"], ["100%", "Pay After Service"]].map(([n, l]) => (
-            <div key={l}>
-              <p className="text-4xl font-extrabold text-secondary">{n}</p>
-              <p className="text-sm mt-1 text-primary-content/80">{l}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Why choose us / stats — live counters from GET /api/public/stats */}
+      {statTiles.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 mt-20">
+          <div className="bg-primary text-primary-content rounded-3xl p-10 grid gap-6 sm:grid-cols-3 text-center">
+            {statTiles.map(([n, l]) => (
+              <div key={l}>
+                <p className="text-4xl font-extrabold text-secondary">{n}</p>
+                <p className="text-sm mt-1 text-primary-content/80">{l}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

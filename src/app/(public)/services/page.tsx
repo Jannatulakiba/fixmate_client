@@ -2,8 +2,7 @@ import Link from "next/link";
 import { SearchX } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
 import { getServices } from "@/lib/services";
-
-const categories = ["Smartphone", "Laptop & PC", "AC", "Refrigerator", "TV", "Washing Machine", "Electrical"];
+import { fetchCategories } from "@/lib/public";
 
 type SP = { search?: string; category?: string; mode?: string; sort?: string };
 
@@ -13,7 +12,7 @@ export const instant = false;
 
 export default async function ServicesPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const services = await getServices(sp);
+  const [services, taxonomy] = await Promise.all([getServices(sp), fetchCategories()]);
   const hasFilter = !!(sp.search || sp.category || sp.mode || sp.sort);
 
   return (
@@ -25,12 +24,11 @@ export default async function ServicesPage({ searchParams }: { searchParams: Pro
         <input name="search" defaultValue={sp.search} placeholder="Search by title or category" className="input w-full" />
         <select name="category" defaultValue={sp.category ?? ""} className="select w-full">
           <option value="">All Categories</option>
-          {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          {taxonomy.categories.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
         <select name="mode" defaultValue={sp.mode ?? ""} className="select w-full">
           <option value="">All Modes</option>
-          <option value="Home Visit">Home Visit</option>
-          <option value="Shop Drop-off">Shop Drop-off</option>
+          {taxonomy.modes.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
         <select name="sort" defaultValue={sp.sort ?? ""} className="select w-full">
           <option value="">Newest</option>

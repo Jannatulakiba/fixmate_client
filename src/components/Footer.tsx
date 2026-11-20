@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Wrench, Mail, Phone, MapPin } from "lucide-react";
+import { fetchCategories } from "@/lib/public";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
@@ -7,8 +8,12 @@ const XIcon = () => (
   </svg>
 );
 
-export default function Footer() {
-  const cats = ["Smartphone", "Laptop & PC", "AC", "Refrigerator", "TV", "Washing Machine", "Electrical"];
+// Category list live API theke ashe; "use cache" tai static pages (about, 404)
+// build-e-i category load korte pare.
+export default async function Footer() {
+  "use cache";
+  const { categories } = await fetchCategories();
+  const cats = categories.slice(0, 5);
   return (
     <footer className="bg-primary text-primary-content mt-20">
       <div className="max-w-7xl mx-auto px-4 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -34,7 +39,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold mb-3">Popular Categories</h4>
           <ul className="space-y-2 text-sm text-primary-content/70">
-            {cats.slice(0, 5).map((c) => (
+            {cats.map((c) => (
               <li key={c}><Link href={`/services?category=${encodeURIComponent(c)}`}>{c}</Link></li>
             ))}
           </ul>

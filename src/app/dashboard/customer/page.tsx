@@ -1,82 +1,118 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ClipboardList, Wrench } from "lucide-react";
 import { toast } from "sonner";
-import PageHeader from "@/components/dashboard/PageHeader";
+import { ClipboardList, Wrench, CheckCircle2, Wallet, CalendarX2 } from "lucide-react";
 import StatsCard from "@/components/dashboard/StatsCard";
 import BarChartCard from "@/components/dashboard/BarChartCard";
-import { statusColors } from "@/lib/status";
+import PageHeader from "@/components/dashboard/PageHeader";
+import StatusBadge from "@/components/StatusBadge";
 import { apiFetch } from "@/lib/api";
-import { type Booking, type BookingStatus } from "@/lib/types";
+import { statusColors } from "@/lib/status";
+import { Booking, fmtDate } from "@/lib/types";
 
-const chartStatuses: BookingStatus[] = [
-  "requested",
-  "accepted",
-  "in-progress",
-  "completed",
-  "cancelled",
-];
+type Stats = {
+  totalRequests: number;
+  activeJobs: number;
+  completedJobs: number;
+  awaitingPayment: number;
+  totalSpent: number;
+  byStatus: Record<string, number>;
+  recentBookings: Booking[];
+};
 
-const activeStatuses: BookingStatus[] = ["requested", "accepted", "in-progress"];
+const order = [
+  ["requested", "Requested"],
+  ["accepted", "Accepted"],
+  ["in-progress", "In Progress"],
+  ["completed", "Completed"],
+  ["rejected", "Rejected"],
+  ["cancelled", "Cancelled"],
+] as const;
 
 export default function CustomerOverview() {
-  const [list, setList] = useState<Booking[] | null>(null);
+  const [s, setS] = useState<Stats | null>(null);
 
   useEffect(() => {
-    apiFetch<Booking[]>("/api/bookings/my")
-      .then(setList)
-      .catch((e) => {
-        toast.error(e instanceof Error ? e.message : "Could not load your bookings");
-        setList([]);
-      });
+    apiFetch<Stats>("/api/customer/stats").then(setS).catch((e) => toast.error(e.message));
   }, []);
 
-  const bookings = list ?? [];
-  const active = bookings.filter((b) => activeStatuses.includes(b.status)).length;
-  const completed = bookings.filter((b) => b.status === "completed").length;
+  if (!s) {
+    return (
+      <div className="space-y-4">
+        <div className="skeleton h-8 w-56" />
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton h-32" />)}
+        </div>
+        <div className="skeleton h-64 w-full" />
+      </div>
+    );
+  }
 
-  const chart = chartStatuses.map((status) => ({
-    name: status.replace("-", " ").replace(/^\w/, (c) => c.toUpperCase()),
-    value: bookings.filter((b) => b.status === status).length,
-    color: statusColors[status],
+  const chart = order.map(([key, name]) => ({
+    name,
+    value: s.byStatus[key] ?? 0,
+    color: statusColors[key],
   }));
 
   return (
     <>
-      <PageHeader title="Customer Overview" subtitle="Your repair requests at a glance." />
+      <PageHeader title="Overview" subtitle="Your repair requests at a glance." />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatsCard label="Total requests" value={s.totalRequests} icon={ClipboardList} tone="info" />
+        <StatsCard label="Active jobs" value={s.activeJobs} icon={Wrench} tone="secondary" hint="Requested, accepted or in progress" />
         <StatsCard
-          label="Total Requests"
-          value={list === null ? "—" : bookings.length}
-          icon={ClipboardList}
-          tone="info"
-        />
-        <StatsCard label="Active Jobs" value={list === null ? "—" : active} icon={Wrench} tone="secondary" />
-        <StatsCard
-          label="Completed Jobs"
-          value={list === null ? "—" : completed}
+          label="Completed jobs"
+          value={s.completedJobs}
           icon={CheckCircle2}
           tone="success"
+          hint={s.awaitingPayment > 0 ? `${s.awaitingPayment} waiting for payment` : "All paid"}
         />
+        <StatsCard label="Total spent" value={`$${Number(s.totalSpent.toFixed(2))}`} icon={Wallet} highlight hint="On paid jobs" />
+      </div>
+
+      <div className="bg-base-100 border border-base-300 rounded-box p-5 mt-6">
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-primary text-lg">Recent bookings</h3>
+          <Link href="/dashboard/customer/bookings" className="text-sm font-semibold text-secondary hover:underline">
+            View all
+          </Link>
+        </div>
+
+        {s.recentBookings.length === 0 ? (
+          <div className="text-center py-10">
+            <CalendarX2 size={34} className="mx-auto text-secondary" />
+            <p className="font-semibold text-primary mt-2">No bookings yet</p>
+            <p className="text-sm text-base-content/60">Find a technician and send your first request.</p>
+            <Link href="/services" className="btn btn-secondary btn-sm mt-4">Browse Services</Link>
+          </div>
+        ) : (
+          <ul className="mt-3 divide-y divide-base-300">
+            {s.recentBookings.map((b) => (
+              <li key={b._id} className="py-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <img src={b.serviceImage} alt={b.serviceTitle} className="w-14 h-10 rounded object-cover shrink-0" />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-primary truncate">{b.serviceTitle}</p>
+                    <p className="text-sm text-base-content/60">
+                      {b.technicianName}, {fmtDate(b.preferredDate)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 shrink-0">
+                  <StatusBadge status={b.status} />
+                  <StatusBadge status={b.paymentStatus} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="mt-6">
         <BarChartCard title="Bookings by Status" data={chart} />
       </div>
-
-      {list?.length === 0 && (
-        <div className="mt-6 bg-base-100 border border-base-300 rounded-box p-10 text-center">
-          <h2 className="font-bold text-primary text-lg">No repair requests yet</h2>
-          <p className="text-sm text-base-content/70 mt-2 max-w-md mx-auto">
-            When you book a repair, it will show up here so you can track every step of the job.
-          </p>
-          <Link href="/services" className="btn btn-secondary mt-6 gap-2">
-            Find a technician <ArrowRight size={16} />
-          </Link>
-        </div>
-      )}
     </>
   );
 }

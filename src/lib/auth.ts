@@ -16,19 +16,26 @@ export const auth = betterAuth({
       bio: { type: "string", required: false },
     },
   },
-  databaseHooks: {
-    user: {
-      create: {
-        // server-side role validation: admin kokhono signup e hobe na
-        before: async (user) => ({
-          data: {
-            ...user,
-            role: (user as { role?: string }).role === "technician" ? "technician" : "customer",
-          },
-        }),
+databaseHooks: {
+  user: {
+    create: {
+      before: async (user) => ({
+        data: {
+          ...user,
+          role: (user as { role?: string }).role === "technician" ? "technician" : "customer",
+        },
+      }),
+    },
+    // user nijer role update korte parbe na (admin role Express API/seed diye bodlay)
+    update: {
+      before: async (user) => {
+        const rest = { ...user } as { role?: string } & Record<string, unknown>;
+        delete rest.role;
+        return { data: rest };
       },
     },
   },
+},
    plugins: [
     jwt({
       jwt: {

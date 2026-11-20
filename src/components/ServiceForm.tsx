@@ -1,10 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/imgbb";
-
-export const CATEGORIES = ["Smartphone", "Laptop & PC", "AC", "Refrigerator", "TV", "Washing Machine", "Electrical"];
-export const MODES = ["Home Visit", "Shop Drop-off"];
+import { FALLBACK_TAXONOMY, fetchCategories, type Taxonomy } from "@/lib/public";
 
 export type ServiceValues = {
   title: string;
@@ -37,6 +35,18 @@ export default function ServiceForm({ initial, submitLabel, technician, onSubmit
   const [preview, setPreview] = useState(initial?.image ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  // Category/mode list GET /api/services/categories theke; fallback tai select khali na thake
+  const [taxonomy, setTaxonomy] = useState<Taxonomy>(FALLBACK_TAXONOMY);
+
+  useEffect(() => {
+    let stale = false;
+    fetchCategories().then((t) => {
+      if (!stale) setTaxonomy(t);
+    });
+    return () => {
+      stale = true;
+    };
+  }, []);
 
   const set = (k: keyof ServiceValues) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setV((p) => ({ ...p, [k]: e.target.value }));
@@ -113,7 +123,7 @@ export default function ServiceForm({ initial, submitLabel, technician, onSubmit
           <label className="label text-sm font-medium">Category</label>
           <select value={v.category} onChange={set("category")} className={`select w-full ${errors.category ? "select-error" : ""}`}>
             <option value="">Select category</option>
-            {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            {taxonomy.categories.map((c) => <option key={c}>{c}</option>)}
           </select>
           {err("category")}
         </div>
@@ -121,7 +131,7 @@ export default function ServiceForm({ initial, submitLabel, technician, onSubmit
           <label className="label text-sm font-medium">Service Mode</label>
           <select value={v.serviceMode} onChange={set("serviceMode")} className={`select w-full ${errors.serviceMode ? "select-error" : ""}`}>
             <option value="">Select mode</option>
-            {MODES.map((m) => <option key={m}>{m}</option>)}
+            {taxonomy.modes.map((m) => <option key={m}>{m}</option>)}
           </select>
           {err("serviceMode")}
         </div>

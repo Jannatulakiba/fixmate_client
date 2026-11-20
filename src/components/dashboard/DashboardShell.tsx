@@ -43,13 +43,19 @@ function navFor(role: string): NavItem[] {
   }
 
   if (getUserRole(role) === "technician") {
-    items.push({ href: "/dashboard/technician/requests", label: "Requests", icon: Inbox });
+    items.push(
+      { href: "/dashboard/technician/requests", label: "Requests", icon: Inbox },
+      { href: "/dashboard/technician/add-service", label: "Add a Service", icon: PlusSquare },
+      { href: "/dashboard/technician/my-services", label: "My Services", icon: ListChecks },
+    );
   }
 
   if (getUserRole(role) === "admin") {
     items.push(
+      { href: "/dashboard/admin/bookings", label: "Bookings", icon: CalendarDays },
       { href: "/dashboard/admin/services", label: "Service Approval", icon: ShieldCheck },
       { href: "/dashboard/admin/users", label: "Users", icon: Users },
+      { href: "/dashboard/admin/transactions", label: "Transactions", icon: ReceiptText },
     );
   }
 
@@ -85,13 +91,6 @@ export default function DashboardShell({
     router.replace("/");
     router.refresh();
   };
-  technician: [
-  { href: "/dashboard/technician", label: "Overview", icon: LayoutDashboard },
-  { href: "/dashboard/technician/add-service", label: "Add a service", icon: PlusSquare },
-  { href: "/dashboard/technician/my-services", label: "My services", icon: ListChecks },
-  { href: "/dashboard/technician/requests", label: "Manage requests", icon: Inbox },
-  { href: "/dashboard/profile", label: "Update profile", icon: UserPen },
-]
 
   const sidebar = (
     <nav className="flex flex-col gap-1">
