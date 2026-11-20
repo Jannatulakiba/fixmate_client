@@ -41,7 +41,13 @@ export default async function ServiceDetails({ params }: { params: Promise<{ id:
         </div>
 
         <div className="mt-8 border border-base-300 rounded-box p-5 flex gap-4 items-start">
-          <img src={s.technician.image} alt={s.technicianName} className="w-16 h-16 rounded-full object-cover" />
+          {s.technician.image ? (
+            <img src={s.technician.image} alt={s.technicianName} className="w-16 h-16 rounded-full object-cover shrink-0" />
+          ) : (
+            <span className="bg-primary text-primary-content w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shrink-0">
+              {(s.technicianName || "?").charAt(0).toUpperCase()}
+            </span>
+          )}
           <div>
             <p className="text-xs text-base-content/60">Technician</p>
             <p className="font-bold text-primary">{s.technicianName}</p>

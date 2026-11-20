@@ -18,6 +18,7 @@ export type Booking = {
   status: BookingStatus;
   finalAmount: number;
   paymentStatus: "unpaid" | "paid";
+  statusHistory?: { status: BookingStatus; changedAt: string }[];
   createdAt: string;
 };
 export type Payment = {

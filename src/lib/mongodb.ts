@@ -1,4 +1,17 @@
+import dns from "node:dns";
 import { MongoClient, type Db } from "mongodb";
+
+// Resolve querySrv ECONNREFUSED on Linux / systemd-resolved (127.0.0.53)
+if (typeof dns.setDefaultResultOrder === "function") {
+  dns.setDefaultResultOrder("ipv4first");
+}
+if (process.env.MONGODB_URI?.startsWith("mongodb+srv://")) {
+  try {
+    dns.setServers(["8.8.8.8", "1.1.1.1", ...dns.getServers()]);
+  } catch {
+    // Ignore if not supported in the current environment
+  }
+}
 
 const uri = process.env.MONGODB_URI;
 if (!uri) {

@@ -8,7 +8,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { apiFetch } from "@/lib/api";
 import { Booking, fmtDate } from "@/lib/types";
 
-const tabs = ["all", "requested", "accepted", "in-progress", "completed"] as const;
+const tabs = ["all", "requested", "accepted", "in-progress", "completed", "rejected", "cancelled"] as const;
 
 export default function ManageRequests() {
   const [list, setList] = useState<Booking[] | null>(null);
@@ -76,7 +76,7 @@ export default function ManageRequests() {
       </div>
 
       <div className="bg-base-100 border border-base-300 rounded-box overflow-x-auto">
-        <table className="table">
+        <table className="table min-w-[860px] [&_td]:px-2 [&_th]:px-2">
           <thead>
             <tr>
               <th>Customer</th><th>Service</th><th>Address</th><th>Date</th>
@@ -101,18 +101,26 @@ export default function ManageRequests() {
 
             {shown?.map((b) => (
               <tr key={b._id}>
-                <td className="text-sm">
+                <td className="text-sm whitespace-nowrap align-top">
                   <p className="font-semibold text-primary">{b.customerName}</p>
                   <p className="text-xs text-base-content/60">{b.customerPhone}</p>
                 </td>
-                <td className="text-sm font-medium">{b.serviceTitle}</td>
-                <td className="text-sm max-w-[180px]">{b.address}</td>
-                <td className="text-sm whitespace-nowrap">{fmtDate(b.preferredDate)}</td>
-                <td className="text-sm max-w-[220px]">
+                <td className="min-w-[200px] align-top">
+                  <div className="flex items-center gap-3">
+                    <img src={b.serviceImage} alt={b.serviceTitle} className="w-14 h-10 rounded object-cover shrink-0" />
+                    <div className="min-w-0">
+                      <p className="font-medium text-primary line-clamp-2" title={b.serviceTitle}>{b.serviceTitle}</p>
+                      <p className="text-xs text-base-content/60">{b.category}</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="text-sm max-w-[110px] align-top break-words">{b.address}</td>
+                <td className="text-sm whitespace-nowrap align-top">{fmtDate(b.preferredDate)}</td>
+                <td className="text-sm max-w-[160px] align-top break-words">
                   <p className="line-clamp-2" title={b.problemDescription}>{b.problemDescription}</p>
                 </td>
-                <td><StatusBadge status={b.status} /></td>
-                <td>
+                <td className="align-top"><StatusBadge status={b.status} /></td>
+                <td className="align-top">
                   <div className="flex gap-2 justify-end">
                     {b.status === "requested" && (
                       <>
@@ -130,6 +138,9 @@ export default function ManageRequests() {
                       <button className="btn btn-secondary btn-xs" onClick={() => openComplete(b)}>Mark Completed</button>
                     )}
                     {b.status === "completed" && <StatusBadge status={b.paymentStatus} />}
+                    {(b.status === "cancelled" || b.status === "rejected") && (
+                      <span className="text-xs text-base-content/40" title={`This request was ${b.status}`}>No action</span>
+                    )}
                   </div>
                 </td>
               </tr>

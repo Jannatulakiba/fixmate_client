@@ -1,10 +1,17 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { auth } from "./auth";
 import { dashboardPath } from "./roles";
 
 export async function requireRole(roles: string[]) {
-  const session = await auth.api.getSession({ headers: await headers() });
+  await connection();
+  let session = null;
+  try {
+    session = await auth.api.getSession({ headers: await headers() });
+  } catch {
+    session = null;
+  }
   if (!session) redirect("/sign-in");
 
   const role = (session.user as { role?: string }).role ?? "customer";
