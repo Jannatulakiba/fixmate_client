@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Wrench, Menu, LayoutDashboard, UserPen, LogOut } from "lucide-react";
+import { Wrench, Menu, LayoutDashboard, UserPen, LogOut, ShieldCheck, CreditCard, Radio } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { dashboardPath } from "@/lib/roles";
@@ -46,7 +46,16 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur border-b border-base-300">
+    <header className="sticky top-0 z-50 bg-base-100/95 backdrop-blur border-b border-base-300">
+      {/* announcement strip (Sheba-style trust bar) */}
+      <div className="bg-primary text-primary-content hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-center gap-6 text-[11px] font-semibold tracking-wide text-primary-content/85">
+          <span className="flex items-center gap-1.5"><ShieldCheck size={13} className="text-secondary" /> Verified technicians only</span>
+          <span className="flex items-center gap-1.5"><CreditCard size={13} className="text-secondary" /> Pay after completion</span>
+          <span className="flex items-center gap-1.5"><Radio size={13} className="text-secondary" /> Live job tracking</span>
+        </div>
+      </div>
+
       <div className="navbar max-w-7xl mx-auto px-4">
         <div className="navbar-start">
           <div className="dropdown lg:hidden">
@@ -77,7 +86,9 @@ export default function Navbar() {
             {links.map((l) => (
               <li key={l.href}>
                 <Link href={l.href}
-                  className={active(l.href) ? "bg-primary text-primary-content" : "hover:bg-base-200"}>
+                  className={`rounded-full ${active(l.href)
+                    ? "bg-primary text-primary-content font-semibold"
+                    : "hover:bg-base-200"}`}>
                   {l.label}
                 </Link>
               </li>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Wrench, Mail, Phone, MapPin } from "lucide-react";
+import { Wrench, Mail, Phone, MapPin, ShieldCheck, BadgeCheck, ArrowRight } from "lucide-react";
 import { fetchCategories } from "@/lib/public";
 
 const XIcon = () => (
@@ -13,7 +13,7 @@ const XIcon = () => (
 export default async function Footer() {
   "use cache";
   const { categories } = await fetchCategories();
-  const cats = categories.slice(0, 5);
+  const cats = categories.slice(0, 6);
   return (
     <footer className="bg-primary text-primary-content mt-20">
       <div className="max-w-7xl mx-auto px-4 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -25,38 +25,52 @@ export default async function Footer() {
           <p className="mt-3 text-sm text-primary-content/70">
             Verified technicians. Trackable jobs. Pay only after the repair is done.
           </p>
+          <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold">
+            <span className="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
+              <BadgeCheck size={13} className="text-secondary" /> Verified technicians
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
+              <ShieldCheck size={13} className="text-secondary" /> Stripe-secured payments
+            </span>
+          </div>
         </div>
 
         <div>
           <h4 className="font-bold mb-3">Quick Links</h4>
-          <ul className="space-y-2 text-sm text-primary-content/70">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/services">Services</Link></li>
-            <li><Link href="/about">About</Link></li>
+          <ul className="space-y-2.5 text-sm text-primary-content/70">
+            <li><Link href="/" className="hover:text-secondary transition inline-flex items-center gap-1.5">Home</Link></li>
+            <li><Link href="/services" className="hover:text-secondary transition inline-flex items-center gap-1.5">Browse Services</Link></li>
+            <li><Link href="/about" className="hover:text-secondary transition inline-flex items-center gap-1.5">How It Works</Link></li>
+            <li><Link href="/sign-up" className="hover:text-secondary transition inline-flex items-center gap-1.5">Become a Technician <ArrowRight size={13} /></Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="font-bold mb-3">Popular Categories</h4>
-          <ul className="space-y-2 text-sm text-primary-content/70">
+          <ul className="space-y-2.5 text-sm text-primary-content/70">
             {cats.map((c) => (
-              <li key={c}><Link href={`/services?category=${encodeURIComponent(c)}`}>{c}</Link></li>
+              <li key={c}>
+                <Link href={`/services?category=${encodeURIComponent(c)}`} className="hover:text-secondary transition">
+                  {c}
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
 
         <div>
           <h4 className="font-bold mb-3">Contact</h4>
-          <ul className="space-y-2 text-sm text-primary-content/70">
-            <li className="flex gap-2"><Mail size={16} /> support@fixmate.com</li>
-            <li className="flex gap-2"><Phone size={16} /> +880 1700-000000</li>
-            <li className="flex gap-2"><MapPin size={16} /> Barishal, Bangladesh</li>
+          <ul className="space-y-2.5 text-sm text-primary-content/70">
+            <li className="flex gap-2.5"><Mail size={16} className="mt-0.5 text-secondary shrink-0" /> support@fixmate.com</li>
+            <li className="flex gap-2.5"><Phone size={16} className="mt-0.5 text-secondary shrink-0" /> +880 1700-000000</li>
+            <li className="flex gap-2.5"><MapPin size={16} className="mt-0.5 text-secondary shrink-0" /> Barishal, Bangladesh</li>
           </ul>
           <div className="mt-4 flex gap-2">
-            <a href="#" aria-label="X" className="btn btn-circle btn-sm btn-ghost border border-white/20"><XIcon /></a>
+            <a href="#" aria-label="X" className="btn btn-circle btn-sm btn-ghost border border-white/20 hover:bg-white/10 hover:border-secondary"><XIcon /></a>
           </div>
         </div>
       </div>
+
       <div className="border-t border-white/10 py-4 text-center text-xs text-primary-content/60">
         © 2026 FixMate. All rights reserved.
       </div>

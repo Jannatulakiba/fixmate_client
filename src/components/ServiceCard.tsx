@@ -1,30 +1,67 @@
 import Link from "next/link";
-import { MapPin, User } from "lucide-react";
+import { ArrowRight, BadgeCheck, MapPin, Home, Store } from "lucide-react";
 
 export type Service = {
   _id: string; title: string; category: string; image: string;
   serviceMode: string; serviceArea: string; basePrice: number; technicianName: string;
 };
 
+const MODE_ICON: Record<string, typeof Home> = { "Home Visit": Home, "Shop Drop-off": Store };
+
 export default function ServiceCard({ s }: { s: Service }) {
+  const ModeIcon = MODE_ICON[s.serviceMode] ?? Home;
+
   return (
-    <div className="card bg-base-100 border border-base-300 shadow-sm hover:shadow-lg hover:-translate-y-1 transition h-full">
-      <figure className="h-48 bg-base-200">
-        <img src={s.image} alt={s.title} className="w-full h-full object-cover" />
+    <Link
+      href={`/services/${s._id}`}
+      className="group card bg-base-100 border border-base-300 overflow-hidden card-hover h-full flex flex-col"
+    >
+      {/* image + overlays */}
+      <figure className="relative h-44 shrink-0 bg-base-200 overflow-hidden">
+        <img
+          src={s.image}
+          alt={s.title}
+          className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+        />
+        <span className="absolute top-3 left-3 badge badge-secondary badge-sm gap-1 shadow">
+          <BadgeCheck size={13} /> Verified
+        </span>
+        <span className="absolute top-3 right-3 badge badge-sm gap-1 bg-base-100/95 text-base-content border-transparent backdrop-blur">
+          <ModeIcon size={13} /> {s.serviceMode}
+        </span>
+        <span className="absolute bottom-3 left-3 badge badge-accent badge-soft badge-sm">
+          {s.category}
+        </span>
       </figure>
-      <div className="card-body p-5 flex flex-col">
-        <div className="flex items-center justify-between gap-2">
-          <span className="badge badge-accent badge-soft">{s.category}</span>
-          <span className="badge badge-outline">{s.serviceMode}</span>
+
+      <div className="card-body p-4 flex flex-col gap-1.5">
+        <h3 className="font-bold text-primary leading-snug line-clamp-2 group-hover:text-secondary transition-colors">
+          {s.title}
+        </h3>
+
+        <p className="text-sm text-base-content/60 flex items-center gap-1.5 line-clamp-1">
+          <MapPin size={14} className="shrink-0 text-base-content/40" /> {s.serviceArea}
+        </p>
+
+        <div className="flex items-center gap-2 text-sm text-base-content/70">
+          <span className="w-6 h-6 rounded-full bg-primary text-primary-content text-[11px] font-bold flex items-center justify-center shrink-0">
+            {(s.technicianName || "?").charAt(0).toUpperCase()}
+          </span>
+          <span className="truncate">{s.technicianName}</span>
         </div>
-        <h3 className="card-title text-lg mt-1 line-clamp-1">{s.title}</h3>
-        <p className="text-sm text-base-content/70 flex items-center gap-1"><MapPin size={14} /> {s.serviceArea}</p>
-        <p className="text-sm text-base-content/70 flex items-center gap-1"><User size={14} /> {s.technicianName}</p>
-        <div className="mt-auto pt-3 flex items-center justify-between">
-          <p className="text-sm">From <span className="text-xl font-extrabold text-primary">${s.basePrice}</span></p>
-          <Link href={`/services/${s._id}`} className="btn btn-secondary btn-sm">View Details</Link>
+
+        <div className="mt-auto pt-3 border-t border-base-300 flex items-end justify-between gap-2">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-base-content/45">
+              Starting at
+            </p>
+            <p className="text-xl font-extrabold text-primary leading-tight">${s.basePrice}</p>
+          </div>
+          <span className="btn btn-secondary btn-sm gap-1">
+            Book Now <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -5,3 +5,10 @@ import type { auth } from "./auth";
 export const authClient = createAuthClient({
   plugins: [inferAdditionalFields<typeof auth>(), jwtClient()],
 });
+
+export const signIn = async () => {
+  const data = await authClient.signIn.social({
+    provider: "google",
+  });
+  return data;
+};

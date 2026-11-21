@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Wrench, CheckCircle2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { dashboardPath, getUserRole } from "@/lib/roles";
 
@@ -49,9 +49,10 @@ function SignInForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-base-100 rounded-box border border-base-300 shadow-sm p-8">
-      <h1 className="text-2xl font-extrabold text-primary">Welcome back</h1>
-      <p className="text-sm text-base-content/70 mt-1">Sign in to manage your repairs.</p>
+    <div className="w-full max-w-md bg-base-100 rounded-3xl border border-base-300 shadow-xl p-8">
+      <span className="eyebrow text-secondary">Welcome back</span>
+      <h1 className="text-2xl font-extrabold text-primary mt-2">Sign in to FixMate</h1>
+      <p className="text-sm text-base-content/70 mt-1">Manage your repairs, requests and payments.</p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
         <div>
@@ -91,10 +92,44 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <section className="min-h-[80vh] bg-base-200 flex items-center justify-center px-4 py-12">
-      <Suspense fallback={<span className="loading loading-spinner loading-lg" />}>
-        <SignInForm />
-      </Suspense>
+    <section className="grid lg:grid-cols-2 min-h-[calc(100vh-3.5rem)] -mb-20">
+      {/* brand panel (TaskRabbit / Urban Company style split) */}
+      <div className="hidden lg:flex flex-col justify-between hero-pattern text-primary-content p-12 relative overflow-hidden">
+        <Link href="/" className="flex items-center gap-2 font-extrabold text-xl w-fit">
+          <span className="bg-secondary text-secondary-content p-1.5 rounded-lg">
+            <Wrench size={20} />
+          </span>
+          FixMate
+        </Link>
+
+        <div className="relative max-w-md">
+          <h2 className="text-4xl font-extrabold leading-tight">
+            Your repairs, <span className="text-secondary">tracked and guaranteed.</span>
+          </h2>
+          <ul className="mt-6 space-y-3 text-primary-content/85">
+            {[
+              "Verified technicians for every job",
+              "Live status from request to completion",
+              "Pay only after the work is done",
+            ].map((t) => (
+              <li key={t} className="flex items-center gap-2.5">
+                <CheckCircle2 size={18} className="text-secondary shrink-0" /> {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="text-xs text-primary-content/50">
+          © {new Date().getFullYear()} FixMate · Barishal, Bangladesh
+        </p>
+      </div>
+
+      {/* form panel */}
+      <div className="flex items-center justify-center px-4 py-12 bg-base-200">
+        <Suspense fallback={<span className="loading loading-spinner loading-lg text-secondary" />}>
+          <SignInForm />
+        </Suspense>
+      </div>
     </section>
   );
 }

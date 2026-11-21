@@ -26,5 +26,43 @@
 }
 
 html { scroll-behavior: smooth; }
+
+/* ---------- shared section helpers ---------- */
 .section-title { @apply text-3xl md:text-4xl font-extrabold text-primary; }
 .section-sub { @apply text-base-content/70 mt-2 max-w-xl; }
+.section-head { @apply flex flex-wrap items-end justify-between gap-4; }
+
+/* ---------- design system (inspired by Sheba / Urban Company / Thumbtack) ---------- */
+.eyebrow { @apply inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em]; }
+
+/* navy hero background: soft glows + subtle blueprint grid */
+.hero-pattern {
+  background-color: var(--color-primary);
+  background-image:
+    radial-gradient(700px 320px at 12% 8%, rgba(245, 158, 11, 0.22), transparent 60%),
+    radial-gradient(640px 340px at 88% 82%, rgba(20, 184, 166, 0.18), transparent 62%),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+}
+
+/* elevated white card with a consistent hover lift */
+.card-hover { @apply transition-all duration-200 hover:-translate-y-1.5 hover:shadow-2xl hover:border-secondary/50; }
+
+/* quick-filter pills (services page, Thumbtack style) */
+.chip { @apply btn btn-sm rounded-full border-base-300 bg-base-100 font-medium hover:border-secondary hover:text-primary; }
+/* explicit colors: @apply btn-primary only inlines part of daisyUI's button styles */
+.chip-active {
+  @apply border-transparent font-semibold;
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+.chip-active:hover,
+.chip-active:focus-visible {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+/* star rating row (testimonials) */
+.stars { @apply inline-flex gap-0.5 text-secondary; }

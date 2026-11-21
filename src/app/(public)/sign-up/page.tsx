@@ -65,10 +65,49 @@ export default function SignUpPage() {
   ] as const;
 
   return (
-    <section className="min-h-[80vh] bg-base-200 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-base-100 rounded-box border border-base-300 shadow-sm p-8">
-        <h1 className="text-2xl font-extrabold text-primary">Create your account</h1>
-        <p className="text-sm text-base-content/70 mt-1">Join FixMate in a minute.</p>
+    <section className="grid lg:grid-cols-2 min-h-[calc(100vh-3.5rem)] -mb-20">
+      {/* brand panel */}
+      <div className="hidden lg:flex flex-col justify-between hero-pattern text-primary-content p-12 relative overflow-hidden">
+        <Link href="/" className="flex items-center gap-2 font-extrabold text-xl w-fit">
+          <span className="bg-secondary text-secondary-content p-1.5 rounded-lg">
+            <Wrench size={20} />
+          </span>
+          FixMate
+        </Link>
+
+        <div className="relative max-w-md">
+          <h2 className="text-4xl font-extrabold leading-tight">
+            Join the network of <span className="text-secondary">verified technicians.</span>
+          </h2>
+          <p className="mt-4 text-primary-content/80">
+            Create one account to book repairs — or list your own services and start earning.
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+            {[
+              ["Free to join", "No listing fees"],
+              ["Get paid fast", "After every job"],
+              ["Build your profile", "Ratings & trust"],
+              ["Own your schedule", "Accept what you want"],
+            ].map(([t, s]) => (
+              <div key={t} className="bg-white/10 border border-white/15 rounded-2xl px-4 py-3">
+                <p className="font-bold text-primary-content">{t}</p>
+                <p className="text-xs text-primary-content/65">{s}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-xs text-primary-content/50">
+          © {new Date().getFullYear()} FixMate · Barishal, Bangladesh
+        </p>
+      </div>
+
+      {/* form panel */}
+      <div className="flex items-center justify-center px-4 py-12 bg-base-200">
+        <div className="w-full max-w-md bg-base-100 rounded-3xl border border-base-300 shadow-xl p-8">
+          <span className="eyebrow text-secondary">Get started</span>
+          <h1 className="text-2xl font-extrabold text-primary mt-2">Create your account</h1>
+          <p className="text-sm text-base-content/70 mt-1">Join FixMate in a minute — it&apos;s free.</p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
           <div>
@@ -124,6 +163,7 @@ export default function SignUpPage() {
           Already have an account?{" "}
           <Link href="/sign-in" className="text-primary font-semibold hover:underline">Sign In</Link>
         </p>
+        </div>
       </div>
     </section>
   );
