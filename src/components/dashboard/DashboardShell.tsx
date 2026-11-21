@@ -15,7 +15,6 @@ import {
   ShieldCheck,
   UserPen,
   Users,
-  Wrench,
   X,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
@@ -27,8 +26,6 @@ type User = {
   image: string | null;
   role: string;
 };
-
-
 
 type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
 
@@ -79,6 +76,11 @@ export default function DashboardShell({
   const path = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { data } = authClient.useSession();
+
+  // profile update korle name sathe sathe change hobe
+  const live = data?.user as { name?: string } | undefined;
+  const displayName = live?.name ?? user.name;
 
   const items = navFor(user.role);
   const active = (href: string) =>
@@ -123,68 +125,31 @@ export default function DashboardShell({
   );
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <header className="sticky top-0 z-40 bg-base-100 border-b border-base-300">
-        <div className="flex h-16 items-center gap-3 px-4 max-w-7xl mx-auto">
+    <div className="bg-base-200 min-h-[calc(100vh-4rem)]">
+      {/* Dashboard sub-bar: sidebar toggle, name ar role */}
+      <div className="bg-base-100 border-b border-base-300">
+        <div className="flex h-12 items-center gap-3 px-4 max-w-7xl mx-auto">
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label="toggle navigation"
-            className="btn btn-ghost btn-square lg:hidden"
+            className="btn btn-ghost btn-square btn-sm lg:hidden"
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X size={18} /> : <Menu size={18} />}
           </button>
+          <span className="font-semibold text-primary text-sm">Dashboard</span>
 
-          <Link href="/" className="flex items-center gap-2 font-extrabold text-xl text-primary">
-            <span className="bg-secondary text-secondary-content p-1.5 rounded-lg">
-              <Wrench size={18} />
-            </span>
-            FixMate
-          </Link>
-
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2">
+            <span className="text-sm font-medium text-base-content/80 hidden sm:inline">{displayName}</span>
             <span className={`badge badge-soft badge-sm capitalize ${roleTone[user.role] ?? "badge-info"}`}>
               {user.role}
             </span>
-            <div className="dropdown dropdown-end">
-              <button tabIndex={0} aria-label="account" className="btn btn-ghost btn-circle avatar">
-                <div className="w-9 rounded-full ring ring-secondary ring-offset-2 ring-offset-base-100">
-                  {user.image ? (
-                    <img src={user.image} alt={user.name} referrerPolicy="no-referrer" />
-                  ) : (
-                    <span className="bg-primary text-primary-content w-full h-full flex items-center justify-center text-sm font-bold">
-                      {user.name?.charAt(0).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-              </button>
-              <ul
-                tabIndex={0}
-                className="menu dropdown-content bg-base-100 rounded-box shadow-lg border border-base-300 mt-3 w-56 p-2 z-10"
-              >
-                <li className="px-3 py-2 pointer-events-none">
-                  <p className="font-bold text-primary leading-tight">{user.name}</p>
-                  <p className="text-xs text-base-content/60 truncate">{user.email}</p>
-                </li>
-                <div className="divider my-0" />
-                <li>
-                  <Link href="/dashboard/profile">
-                    <UserPen size={16} /> Profile
-                  </Link>
-                </li>
-                <li>
-                  <button onClick={signOut} className="text-error">
-                    <LogOut size={16} /> Sign Out
-                  </button>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
-      </header>
+      </div>
 
       <div className="max-w-7xl mx-auto flex">
         <aside
-          className={`w-64 shrink-0 border-r border-base-300 bg-base-100 min-h-[calc(100vh-4rem)] p-4 ${
+          className={`w-64 shrink-0 border-r border-base-300 bg-base-100 min-h-[calc(100vh-7rem)] p-4 ${
             open ? "block" : "hidden"
           } lg:block`}
         >

@@ -5,12 +5,8 @@ import { Wrench, Menu, LayoutDashboard, UserPen, LogOut, ShieldCheck, CreditCard
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { dashboardPath } from "@/lib/roles";
+import { publicLinks as links, isActiveLink } from "@/lib/nav";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "How It Works" },
-];
 
 const roleBadge: Record<string, string> = {
   customer: "badge-info",

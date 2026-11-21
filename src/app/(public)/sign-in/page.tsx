@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Eye, EyeOff, Wrench, CheckCircle2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { dashboardPath, getUserRole } from "@/lib/roles";
+import GoogleButton from "@/components/GoogleButton";
 
 function SignInForm() {
   const router = useRouter();
@@ -81,7 +82,8 @@ function SignInForm() {
           {loading ? <span className="loading loading-spinner loading-sm" /> : "Sign In"}
         </button>
       </form>
-
+      <div className="divider text-xs text-base-content/50 my-5">OR</div>
+      <GoogleButton callbackURL={redirectTo || "/services"} />
       <p className="text-sm text-center mt-6 text-base-content/70">
         New to FixMate?{" "}
         <Link href="/sign-up" className="text-primary font-semibold hover:underline">Sign Up</Link>

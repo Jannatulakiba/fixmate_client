@@ -24,10 +24,9 @@ const globalWithMongo = globalThis as typeof globalThis & {
   __mongoDb?: Db;
 };
 
-export const client = globalWithMongo.__mongoClient ?? new MongoClient(uri);
-export const db = globalWithMongo.__mongoDb ?? client.db();
-
-if (process.env.NODE_ENV !== "production") {
-  globalWithMongo.__mongoClient = client;
-  globalWithMongo.__mongoDb = db;
+if (!globalWithMongo.__mongoClient) {
+  globalWithMongo.__mongoClient = new MongoClient(uri);
 }
+
+export const client = globalWithMongo.__mongoClient;
+export const db: Db = client.db();

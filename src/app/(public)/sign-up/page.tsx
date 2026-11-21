@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Eye, EyeOff, UserRound, Wrench } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { dashboardPath, getUserRole } from "@/lib/roles";
+import GoogleButton from "@/components/GoogleButton";
 
 type Errors = { name?: string; email?: string; password?: string };
 
@@ -109,60 +110,63 @@ export default function SignUpPage() {
           <h1 className="text-2xl font-extrabold text-primary mt-2">Create your account</h1>
           <p className="text-sm text-base-content/70 mt-1">Join FixMate in a minute — it&apos;s free.</p>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
-          <div>
-            <label className="label text-sm font-medium">Full Name</label>
-            <input value={form.name} onChange={onChange("name")} placeholder="Your name"
-              className={`input w-full ${errors.name ? "input-error" : ""}`} />
-            {errors.name && <p className="text-error text-xs mt-1">{errors.name}</p>}
-          </div>
-
-          <div>
-            <label className="label text-sm font-medium">Email</label>
-            <input type="email" value={form.email} onChange={onChange("email")} placeholder="you@example.com"
-              className={`input w-full ${errors.email ? "input-error" : ""}`} />
-            {errors.email && <p className="text-error text-xs mt-1">{errors.email}</p>}
-          </div>
-
-          <div>
-            <label className="label text-sm font-medium">Password</label>
-            <div className="relative">
-              <input type={show ? "text" : "password"} value={form.password} onChange={onChange("password")}
-                placeholder="Min 6 chars, upper and lower case"
-                className={`input w-full pr-10 ${errors.password ? "input-error" : ""}`} />
-              <button type="button" onClick={() => setShow((s) => !s)} aria-label="toggle password"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/60">
-                {show ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+          <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
+            <div>
+              <label className="label text-sm font-medium">Full Name</label>
+              <input value={form.name} onChange={onChange("name")} placeholder="Your name"
+                className={`input w-full ${errors.name ? "input-error" : ""}`} />
+              {errors.name && <p className="text-error text-xs mt-1">{errors.name}</p>}
             </div>
-            {errors.password && <p className="text-error text-xs mt-1">{errors.password}</p>}
-          </div>
 
-          <div>
-            <label className="label text-sm font-medium">I am a</label>
-            <div className="grid grid-cols-2 gap-3 mt-1">
-              {roles.map((r) => (
-                <button type="button" key={r.value} onClick={() => setRole(r.value)}
-                  className={`rounded-box border p-4 text-left transition ${
-                    role === r.value ? "border-secondary bg-secondary/10" : "border-base-300 hover:border-secondary/60"
-                  }`}>
-                  <r.icon size={20} className="text-secondary" />
-                  <p className="font-semibold text-primary mt-2">{r.label}</p>
-                  <p className="text-xs text-base-content/60">{r.text}</p>
+            <div>
+              <label className="label text-sm font-medium">Email</label>
+              <input type="email" value={form.email} onChange={onChange("email")} placeholder="you@example.com"
+                className={`input w-full ${errors.email ? "input-error" : ""}`} />
+              {errors.email && <p className="text-error text-xs mt-1">{errors.email}</p>}
+            </div>
+
+            <div>
+              <label className="label text-sm font-medium">Password</label>
+              <div className="relative">
+                <input type={show ? "text" : "password"} value={form.password} onChange={onChange("password")}
+                  placeholder="Min 6 chars, upper and lower case"
+                  className={`input w-full pr-10 ${errors.password ? "input-error" : ""}`} />
+                <button type="button" onClick={() => setShow((s) => !s)} aria-label="toggle password"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/60">
+                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
-              ))}
+              </div>
+              {errors.password && <p className="text-error text-xs mt-1">{errors.password}</p>}
             </div>
-          </div>
 
-          <button disabled={loading} className="btn btn-secondary w-full">
-            {loading ? <span className="loading loading-spinner loading-sm" /> : "Sign Up"}
-          </button>
-        </form>
+            <div>
+              <label className="label text-sm font-medium">I am a</label>
+              <div className="grid grid-cols-2 gap-3 mt-1">
+                {roles.map((r) => (
+                  <button type="button" key={r.value} onClick={() => setRole(r.value)}
+                    className={`rounded-box border p-4 text-left transition ${role === r.value ? "border-secondary bg-secondary/10" : "border-base-300 hover:border-secondary/60"
+                      }`}>
+                    <r.icon size={20} className="text-secondary" />
+                    <p className="font-semibold text-primary mt-2">{r.label}</p>
+                    <p className="text-xs text-base-content/60">{r.text}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        <p className="text-sm text-center mt-6 text-base-content/70">
-          Already have an account?{" "}
-          <Link href="/sign-in" className="text-primary font-semibold hover:underline">Sign In</Link>
-        </p>
+            <button disabled={loading} className="btn btn-secondary w-full">
+              {loading ? <span className="loading loading-spinner loading-sm" /> : "Sign Up"}
+            </button>
+          </form>
+          <div className="divider text-xs text-base-content/50 my-5">OR</div>
+          <GoogleButton label="Sign up with Google" />
+          <p className="text-xs text-center text-base-content/50 mt-2">
+            Google accounts join as a Customer.
+          </p>
+          <p className="text-sm text-center mt-6 text-base-content/70">
+            Already have an account?{" "}
+            <Link href="/sign-in" className="text-primary font-semibold hover:underline">Sign In</Link>
+          </p>
         </div>
       </div>
     </section>
