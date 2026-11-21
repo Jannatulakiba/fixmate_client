@@ -79,7 +79,7 @@ export default function DashboardShell({
   const { data } = authClient.useSession();
 
   // profile update korle name sathe sathe change hobe
-  const live = data?.user as { name?: string } | undefined;
+  const live = (data?.user as { name?: string } | undefined) ?? undefined;
   const displayName = live?.name ?? user.name;
 
   const items = navFor(user.role);
@@ -103,11 +103,10 @@ export default function DashboardShell({
             key={item.href}
             href={item.href}
             onClick={() => setOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              active(item.href)
-                ? "bg-primary text-primary-content"
-                : "text-base-content/70 hover:bg-base-200"
-            }`}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${active(item.href)
+              ? "bg-primary text-primary-content"
+              : "text-base-content/70 hover:bg-base-200"
+              }`}
           >
             <Icon size={18} />
             {item.label}
@@ -126,7 +125,7 @@ export default function DashboardShell({
 
   return (
     <div className="bg-base-200 min-h-[calc(100vh-4rem)]">
-      {/* Dashboard sub-bar: sidebar toggle, name ar role */}
+      {/* Dashboard sub-bar: sidebar toggle, title, name ar role */}
       <div className="bg-base-100 border-b border-base-300">
         <div className="flex h-12 items-center gap-3 px-4 max-w-7xl mx-auto">
           <button
@@ -149,9 +148,8 @@ export default function DashboardShell({
 
       <div className="max-w-7xl mx-auto flex">
         <aside
-          className={`w-64 shrink-0 border-r border-base-300 bg-base-100 min-h-[calc(100vh-7rem)] p-4 ${
-            open ? "block" : "hidden"
-          } lg:block`}
+          className={`w-64 shrink-0 border-r border-base-300 bg-base-100 min-h-[calc(100vh-7rem)] p-4 ${open ? "block" : "hidden"
+            } lg:block`}
         >
           {sidebar}
         </aside>
