@@ -7,8 +7,6 @@ import { fetchCategories } from "@/lib/public";
 
 type SP = { search?: string; category?: string; mode?: string; sort?: string };
 
-// Filter results depend on searchParams, so this segment is allowed to block
-// the navigation instead of producing an instant static shell.
 export const instant = false;
 
 const SORT_OPTIONS = [
