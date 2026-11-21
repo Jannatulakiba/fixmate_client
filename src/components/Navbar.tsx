@@ -7,7 +7,6 @@ import { authClient } from "@/lib/auth-client";
 import { dashboardPath } from "@/lib/roles";
 import { publicLinks as links, isActiveLink } from "@/lib/nav";
 
-
 const roleBadge: Record<string, string> = {
   customer: "badge-info",
   technician: "badge-warning",
@@ -22,7 +21,7 @@ export default function Navbar() {
     | { name: string; email: string; image?: string | null; role?: string }
     | undefined;
 
-  const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+  const active = (href: string) => isActiveLink(path, href);
   const closeMenu = () => (document.activeElement as HTMLElement | null)?.blur();
 
   const handleSignOut = async () => {
