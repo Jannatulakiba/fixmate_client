@@ -55,11 +55,11 @@ export default async function Home() {
 
   const statTiles = stats
     ? [
-        [fmtCount(stats.verifiedTechnicians), "Verified Technicians", BadgeCheck],
-        [fmtCount(stats.jobsCompleted), "Jobs Completed", Wrench],
-        [fmtCount(stats.servicesListed), "Services Listed", ClipboardList],
-        [fmtCount(stats.customers), "Happy Customers", ShieldCheck],
-      ] as const
+      [fmtCount(stats.verifiedTechnicians), "Verified Technicians", BadgeCheck],
+      [fmtCount(stats.jobsCompleted), "Jobs Completed", Wrench],
+      [fmtCount(stats.servicesListed), "Services Listed", ClipboardList],
+      [fmtCount(stats.customers), "Happy Customers", ShieldCheck],
+    ] as const
     : [];
 
   return (
@@ -73,7 +73,7 @@ export default async function Home() {
             </span>
 
             <h1 className="mt-5 text-4xl md:text-5xl font-extrabold leading-[1.12]">
-              Broken device? Get it fixed by{" "}
+              Broken device Get it fixed by{" "}
               <span className="text-secondary">verified technicians</span>.
             </h1>
 

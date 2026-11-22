@@ -119,7 +119,7 @@ export default function MyBookings() {
           <CalendarX2 size={44} className="text-secondary mb-3" />
           <p className="font-bold text-primary text-lg">No bookings confirm yet</p>
           <p className="text-sm text-base-content/60 mt-1">Find a technician and send your first repair request.</p>
-          <Link href="/services" className="btn btn-secondary btn-sm mt-5">Browse Service</Link>
+          <Link href="/services" className="btn btn-secondary btn-sm mt-5">browse Service</Link>
         </div>
       )}
 
@@ -291,8 +291,8 @@ export default function MyBookings() {
                       <div className="flex flex-col items-center">
                         <span
                           className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${done
-                              ? "bg-secondary text-secondary-content"
-                              : "bg-base-200 text-base-content/40"
+                            ? "bg-secondary text-secondary-content"
+                            : "bg-base-200 text-base-content/40"
                             } ${current ? "ring-2 ring-secondary ring-offset-2" : ""}`}
                         >
                           {done ? <Check size={14} /> : i + 1}

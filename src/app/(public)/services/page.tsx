@@ -36,7 +36,7 @@ export default async function ServicesPage({ searchParams }: { searchParams: Pro
           <span className="eyebrow text-secondary">Browse & book</span>
           <h1 className="mt-2 text-3xl md:text-4xl font-extrabold">Find a repair service</h1>
           <p className="mt-2 text-primary-content/75 max-w-2xl">
-            Search by device, appliance or problem — then book a verified technician in a few clicks.
+            Search by device, appliance or problem then book a verified technician in a few clicks.
           </p>
 
           {/* single filter card — text-base-content so fields don't inherit the hero's white text */}

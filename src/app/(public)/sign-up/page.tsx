@@ -78,7 +78,7 @@ export default function SignUpPage() {
 
         <div className="relative max-w-md">
           <h2 className="text-4xl font-extrabold leading-tight">
-            Join the network of <span className="text-secondary">verified technicians.</span>
+            join the network of <span className="text-secondary">verified technicians.</span>
           </h2>
           <p className="mt-4 text-primary-content/80">
             Create one account to book repairs — or list your own services and start earning.

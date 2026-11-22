@@ -57,7 +57,7 @@ function Content() {
 
       <div className="mt-6 border border-base-300 rounded-box p-5 text-left space-y-3 text-sm">
         <div className="flex justify-between gap-4">
-          <span className="text-base-content/60">Service</span>
+          <span className="text-base-content/60">Services</span>
           <span className="font-semibold text-primary text-right">{payment.serviceTitle}</span>
         </div>
         <div className="flex justify-between gap-4">

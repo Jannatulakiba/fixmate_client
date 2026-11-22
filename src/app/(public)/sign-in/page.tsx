@@ -65,7 +65,7 @@ function SignInForm() {
         </div>
 
         <div>
-          <label className="label text-sm font-medium">Password</label>
+          <label className="label text-sm font-medium">password</label>
           <div className="relative">
             <input type={show ? "text" : "password"} value={form.password} placeholder="Your password"
               onChange={(e) => setForm({ ...form, password: e.target.value })}

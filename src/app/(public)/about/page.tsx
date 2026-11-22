@@ -47,7 +47,7 @@ export default function About() {
             Finding a trustworthy repair technician shouldn’t be hard.
           </h1>
           <p className="mt-4 text-primary-content/75 max-w-2xl mx-auto text-lg">
-            FixMate gives every job a clear status, a verified professional, and makes sure you pay
+            FixMate gives every job a clear status, a verified professional and makes sure you pay
             only after the work is done.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
