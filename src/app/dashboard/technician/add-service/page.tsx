@@ -13,7 +13,7 @@ export default function AddService() {
 
   return (
     <>
-      <PageHeader title="Add a Service" subtitle="Your service will be visible after admin approval." />
+      <PageHeader title="Add a service" subtitle="Your service will be visible after admin approval." />
       <div className="bg-base-100 border border-base-300 rounded-box p-6 max-w-3xl">
         <ServiceForm
           technician={user ? { name: user.name, email: user.email } : undefined}

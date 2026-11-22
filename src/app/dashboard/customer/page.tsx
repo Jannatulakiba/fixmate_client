@@ -84,7 +84,7 @@ export default function CustomerOverview() {
           <div className="text-center py-10">
             <CalendarX2 size={34} className="mx-auto text-secondary" />
             <p className="font-semibold text-primary mt-2">No bookings yet</p>
-            <p className="text-sm text-base-content/60">Find a technician and send your first request.</p>
+            <p className="text-sm text-base-content/60">find a technician and send your first request.</p>
             <Link href="/services" className="btn btn-secondary btn-sm mt-4">Browse Services</Link>
           </div>
         ) : (

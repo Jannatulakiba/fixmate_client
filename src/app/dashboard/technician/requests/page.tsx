@@ -64,7 +64,7 @@ export default function ManageRequests() {
 
   return (
     <>
-      <PageHeader title="Manage Requests" subtitle="Accept jobs and move them through each stage." />
+      <PageHeader title="Manage requests" subtitle="Accept jobs and move them through each stage." />
 
       <div role="tablist" className="tabs tabs-box mb-4 w-fit max-w-full overflow-x-auto">
         {tabs.map((t) => (

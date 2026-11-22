@@ -151,7 +151,7 @@ export default function MyServices() {
       <ConfirmModal
         open={!!deleting}
         title="Delete this service?"
-        message={`"${deleting?.title ?? ""}" will be removed permanently. Existing bookings keep their details.`}
+        message={`"${deleting?.title ?? ""}" will be removed permanently Existing bookings keep their details.`}
         confirmText="Delete"
         loading={busy}
         onConfirm={remove}

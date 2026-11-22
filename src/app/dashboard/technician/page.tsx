@@ -90,7 +90,7 @@ export default function TechnicianOverview() {
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-primary text-lg">New request</h3>
             <Link href="/dashboard/technician/requests" className="text-sm font-semibold text-secondary hover:underline">
-              Manage requests
+              Manage Requests
             </Link>
           </div>
 

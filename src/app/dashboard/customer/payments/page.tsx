@@ -25,7 +25,7 @@ export default function PaymentHistory() {
       <div className="bg-base-100 border border-base-300 rounded-box overflow-x-auto">
         <table className="table">
           <thead>
-            <tr><th>Service</th><th>Technician</th><th>Amount</th><th>Transaction ID</th><th>Paid On</th></tr>
+            <tr><th>Service</th><th>Technician</th><th>amount</th><th>Transaction ID</th><th>Paid On</th></tr>
           </thead>
           <tbody>
             {list === null &&

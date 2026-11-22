@@ -49,7 +49,7 @@ function ProfileForm({ user }: { user: U }) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const er: Record<string, string> = {};
-    if (form.name.trim().length < 2) er.name = "Name must be at least 2 characters";
+    if (form.name.trim().length < 2) er.name = "name must be at least 2 characters";
     if (form.phone && !/^\+?\d{10,14}$/.test(form.phone.replace(/[\s-]/g, ""))) er.phone = "Enter a valid phone number";
     if (form.bio.length > 300) er.bio = "Bio must be 300 characters or less";
     setErrors(er);
