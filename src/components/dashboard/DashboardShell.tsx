@@ -127,7 +127,7 @@ export default function DashboardShell({
     <div className="bg-base-200 min-h-[calc(100vh-4rem)]">
       {/* Dashboard sub-bar: sidebar toggle, title, name ar role */}
       <div className="bg-base-100 border-b border-base-300">
-        <div className="flex h-12 items-center gap-3 px-4 max-w-7xl mx-auto">
+        <div className="flex h-12 items-center gap-3 px-4 w-full">
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label="toggle navigation"
@@ -146,7 +146,7 @@ export default function DashboardShell({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto flex">
+      <div className="flex w-full">
         <aside
           className={`w-64 shrink-0 border-r border-base-300 bg-base-100 min-h-[calc(100vh-7rem)] p-4 ${open ? "block" : "hidden"
             } lg:block`}
