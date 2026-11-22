@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="fixmate">
+    <html lang="en" data-theme="fixmate" data-scroll-behavior="smooth">
       <body className={`${font.className} bg-base-100`}>
         {children}
         <Toaster richColors position="top-right" />
