@@ -88,7 +88,7 @@ export default function TechnicianOverview() {
         {/* New requests */}
         <div className="bg-base-100 border border-base-300 rounded-box p-5">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-primary text-lg">New requests</h3>
+            <h3 className="font-bold text-primary text-lg">New request</h3>
             <Link href="/dashboard/technician/requests" className="text-sm font-semibold text-secondary hover:underline">
               Manage requests
             </Link>

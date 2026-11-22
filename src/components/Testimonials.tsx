@@ -17,7 +17,7 @@ const testimonials = [
   {
     name: "Rakib Hasan",
     role: "Customer · Chittagong",
-    text: "I could see the job status change from Requested to Completed in real time. The technician arrived on time and the warranty gave me peace of mind.",
+    text: "I could see the job change from Requested to Completed in real time. The technician arrived on time and the warranty gave me peace of mind.",
     initials: "RH",
   },
 ];

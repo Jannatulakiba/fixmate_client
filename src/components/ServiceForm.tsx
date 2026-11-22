@@ -101,11 +101,11 @@ export default function ServiceForm({ initial, submitLabel, technician, onSubmit
       {technician && (
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="label text-sm font-medium">Technician Name</label>
+            <label className="label text-sm font-medium">Technician name</label>
             <input value={technician.name} readOnly className="input w-full bg-base-200" />
           </div>
           <div>
-            <label className="label text-sm font-medium">Technician Email</label>
+            <label className="label text-sm font-medium">Technician email</label>
             <input value={technician.email} readOnly className="input w-full bg-base-200" />
           </div>
         </div>

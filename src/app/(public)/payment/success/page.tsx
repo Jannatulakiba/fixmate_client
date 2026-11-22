@@ -44,7 +44,7 @@ function Content() {
     return (
       <div className="text-center">
         <span className="loading loading-spinner loading-lg text-secondary" />
-        <p className="text-sm text-base-content/60 mt-3">Confirming your payment...</p>
+        <p className="text-sm text-base-content/60 mt-3">Confirming yours payment...</p>
       </div>
     );
   }

@@ -10,32 +10,32 @@ import { Booking, fmtDate, shortId } from "@/lib/types";
 
 // Job pipeline steps — customer tracks the repair step by step
 const TRACK_STEPS = [
-  { key: "requested",   label: "Requested",   hint: "Request sent to the technician" },
-  { key: "accepted",    label: "Accepted",     hint: "Technician accepted your request" },
+  { key: "requested", label: "Requested", hint: "Request sent to the technician" },
+  { key: "accepted", label: "Accepted", hint: "Technician accepted your request" },
   { key: "in-progress", label: "In Progress", hint: "Repair work has started" },
-  { key: "completed",   label: "Completed",   hint: "Job finished — pay online now" },
+  { key: "completed", label: "Completed", hint: "Job finished — pay online now" },
 ] as const;
 
 const fmtWhen = (iso?: string) =>
   iso
     ? new Date(iso).toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
     : "";
 
 // ── Status badge colours ────────────────────────────────────────────────────
 const STATUS_STYLES: Record<string, string> = {
-  requested:   "bg-blue-100 text-blue-700 border border-blue-200",
-  accepted:    "bg-primary/10 text-primary border border-primary/20",
-  "in-progress":"bg-amber-100 text-amber-700 border border-amber-200",
-  completed:   "bg-emerald-100 text-emerald-700 border border-emerald-200",
-  rejected:    "bg-red-100 text-red-700 border border-red-200",
-  cancelled:   "bg-gray-100 text-gray-500 border border-gray-200",
-  paid:        "bg-emerald-100 text-emerald-700 border border-emerald-200",
-  unpaid:      "bg-gray-100 text-gray-500 border border-gray-200",
+  requested: "bg-blue-100 text-blue-700 border border-blue-200",
+  accepted: "bg-primary/10 text-primary border border-primary/20",
+  "in-progress": "bg-amber-100 text-amber-700 border border-amber-200",
+  completed: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  rejected: "bg-red-100 text-red-700 border border-red-200",
+  cancelled: "bg-gray-100 text-gray-500 border border-gray-200",
+  paid: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  unpaid: "bg-gray-100 text-gray-500 border border-gray-200",
 };
 
 function Chip({ label }: { label: string }) {
@@ -51,9 +51,9 @@ function Chip({ label }: { label: string }) {
 }
 
 export default function MyBookings() {
-  const [list, setList]       = useState<Booking[] | null>(null);
-  const [target, setTarget]   = useState<Booking | null>(null);
-  const [busy, setBusy]       = useState(false);
+  const [list, setList] = useState<Booking[] | null>(null);
+  const [target, setTarget] = useState<Booking | null>(null);
+  const [busy, setBusy] = useState(false);
   const [tracking, setTracking] = useState<Booking | null>(null);
   const [payingId, setPayingId] = useState<string | null>(null);
 
@@ -93,11 +93,11 @@ export default function MyBookings() {
   };
 
   // tracker helpers
-  const history  = tracking?.statusHistory ?? [];
+  const history = tracking?.statusHistory ?? [];
   const hasStatus = (k: string) =>
     !!tracking && (tracking.status === k || history.some((h) => h.status === k));
-  const terminal  = tracking?.status === "rejected" || tracking?.status === "cancelled";
-  const paid      = tracking?.paymentStatus === "paid";
+  const terminal = tracking?.status === "rejected" || tracking?.status === "cancelled";
+  const paid = tracking?.paymentStatus === "paid";
   const lastChange = history[history.length - 1]?.changedAt;
 
   return (
@@ -117,9 +117,9 @@ export default function MyBookings() {
       {list?.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <CalendarX2 size={44} className="text-secondary mb-3" />
-          <p className="font-bold text-primary text-lg">No bookings yet</p>
+          <p className="font-bold text-primary text-lg">No bookings confirm yet</p>
           <p className="text-sm text-base-content/60 mt-1">Find a technician and send your first repair request.</p>
-          <Link href="/services" className="btn btn-secondary btn-sm mt-5">Browse Services</Link>
+          <Link href="/services" className="btn btn-secondary btn-sm mt-5">Browse Service</Link>
         </div>
       )}
 
@@ -127,12 +127,12 @@ export default function MyBookings() {
       {list && list.length > 0 && (
         <div className="space-y-4">
           {list.map((b) => {
-            const isCompleted  = b.status === "completed";
-            const isUnpaid     = b.paymentStatus === "unpaid";
-            const isPaid       = b.paymentStatus === "paid";
-            const canCancel    = b.status === "requested";
-            const canPay       = isCompleted && isUnpaid;
-            const isPaying     = payingId === b._id;
+            const isCompleted = b.status === "completed";
+            const isUnpaid = b.paymentStatus === "unpaid";
+            const isPaid = b.paymentStatus === "paid";
+            const canCancel = b.status === "requested";
+            const canPay = isCompleted && isUnpaid;
+            const isPaying = payingId === b._id;
 
             return (
               <div
@@ -205,8 +205,8 @@ export default function MyBookings() {
                   <div>
                     <p className="text-xs text-base-content/50">{isCompleted ? "Final amount" : "Starting price"}</p>
                     <p className="text-2xl font-extrabold text-primary leading-tight">
-  ${isCompleted ? b.finalAmount : b.basePrice}
-</p>
+                      ${isCompleted ? b.finalAmount : b.basePrice}
+                    </p>
                   </div>
 
                   {/* Action buttons */}
@@ -215,7 +215,7 @@ export default function MyBookings() {
                     {canPay && (
                       <button
                         className="btn w-full text-white font-bold rounded-xl transition-all"
-                        style={{ background: "#f59e0b", border: "none" }}
+                        style={{ background: "#c58310", border: "none" }}
                         disabled={isPaying}
                         onClick={() => pay(b)}
                       >
@@ -283,18 +283,17 @@ export default function MyBookings() {
             <>
               <ol className="mt-5">
                 {TRACK_STEPS.map((s, i) => {
-                  const done    = hasStatus(s.key);
+                  const done = hasStatus(s.key);
                   const current = tracking.status === s.key && !terminal;
-                  const at      = history.find((h) => h.status === s.key)?.changedAt;
+                  const at = history.find((h) => h.status === s.key)?.changedAt;
                   return (
                     <li key={s.key} className="flex gap-3">
                       <div className="flex flex-col items-center">
                         <span
-                          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                            done
+                          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${done
                               ? "bg-secondary text-secondary-content"
                               : "bg-base-200 text-base-content/40"
-                          } ${current ? "ring-2 ring-secondary ring-offset-2" : ""}`}
+                            } ${current ? "ring-2 ring-secondary ring-offset-2" : ""}`}
                         >
                           {done ? <Check size={14} /> : i + 1}
                         </span>
@@ -317,9 +316,8 @@ export default function MyBookings() {
                 <li className="flex gap-3">
                   <div className="flex flex-col items-center">
                     <span
-                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                        paid ? "bg-success text-success-content" : "bg-base-200 text-base-content/40"
-                      }`}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${paid ? "bg-success text-success-content" : "bg-base-200 text-base-content/40"
+                        }`}
                     >
                       {paid ? <Check size={14} /> : 5}
                     </span>
@@ -344,7 +342,7 @@ export default function MyBookings() {
               {tracking.status === "completed" && tracking.paymentStatus === "unpaid" && (
                 <button
                   className="btn w-full mt-4 text-white font-bold rounded-xl"
-                  style={{ background: "#f59e0b", border: "none" }}
+                  style={{ background: "#fcad24", border: "none" }}
                   disabled={payingId === tracking._id}
                   onClick={() => pay(tracking)}
                 >

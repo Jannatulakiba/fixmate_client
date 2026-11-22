@@ -57,7 +57,7 @@ export default function Dashboard({ role, subtitle, stats, children }: Props) {
               <ShieldCheck size={14} /> {label} account
             </span>
             <h1 className="text-3xl md:text-4xl font-extrabold text-primary mt-3">
-              Welcome back, {user.name}
+              Welcome back {user.name}
             </h1>
             <p className="text-base-content/70 mt-1">{subtitle}</p>
             <p className="text-sm text-base-content/50 mt-1">{user.email}</p>

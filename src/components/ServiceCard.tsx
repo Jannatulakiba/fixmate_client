@@ -24,7 +24,7 @@ export default function ServiceCard({ s }: { s: Service }) {
           className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
         />
         <span className="absolute top-3 left-3 badge badge-secondary badge-sm gap-1 shadow">
-          <BadgeCheck size={13} /> Verified
+          <BadgeCheck size={13} /> Verified Done
         </span>
         <span className="absolute top-3 right-3 badge badge-sm gap-1 bg-base-100/95 text-base-content border-transparent backdrop-blur">
           <ModeIcon size={13} /> {s.serviceMode}
